@@ -69,6 +69,22 @@ app.post('/obrisiTrening', async function (req, res) {
         res.sendStatus(400)
 })
 
+app.post('/obrisiVrstuTreninga', async function (req, res) {
+    let result = await VrstaTreningRepo.remove(req.query.id)
+    if(result==true)
+        res.sendStatus(200)
+    else
+        res.sendStatus(400)
+})
+
+app.post('/urediVrstuTreninga', async function (req, res) {
+    let result = await VrstaTreningRepo.edit(req.query.id, req.query.naziv)
+    if(result==true)
+        res.sendStatus(200)
+    else
+        res.sendStatus(400)
+})
+
 app.post('/obrisiTermin', async function (req, res) {
     let result = await Termin.remove(req.query.termin)
     if(result==true)

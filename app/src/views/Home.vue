@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div class="router">
+            <router-link to="/">Treninzi</router-link> |
+            <router-link to="/vrsteTreninga">Vrste treninga</router-link> 
+        </div>
         TRENINZI
         <div class="treninzi" v-for="t in poljeTreninga" :key="t.id">
         <ul class="treninzi-list">   

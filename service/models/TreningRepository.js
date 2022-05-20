@@ -9,7 +9,7 @@ module.exports = class TreningRepository {
     }
 
     async getAll(){
-        if(this.init==false){
+        this.treninzi = []
             try{
                 const sql = `SELECT trening.id AS id, trening.naziv AS naziv, trening.opis AS opis, vrsta_trening.naziv AS vrsta FROM trening JOIN vrsta_trening ON vrsta = vrsta_trening.id`;
                 const result = await db.query(sql);
@@ -21,7 +21,6 @@ module.exports = class TreningRepository {
                 this.init = true
             }
             catch(err){}
-        }
         return this.treninzi;
     }
 
