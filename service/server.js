@@ -85,6 +85,14 @@ app.post('/urediVrstuTreninga', async function (req, res) {
         res.sendStatus(400)
 })
 
+app.post('/urediTrening', async function (req, res) {
+    let result = await TreningRepo.edit(req.query.id, req.query.naziv, req.query.opis, req.query.idVrsta)
+    if(result==true)
+        res.sendStatus(200)
+    else
+        res.sendStatus(400)
+})
+
 app.post('/obrisiTermin', async function (req, res) {
     let result = await Termin.remove(req.query.termin)
     if(result==true)

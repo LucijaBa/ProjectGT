@@ -6,19 +6,19 @@
             <router-link to="/vrsteTreninga">Vrste treninga</router-link> 
         </div>
 
-        Naziv: <span contenteditable="true">{{ trening.naziv }}</span> <br><br>
-        Opis: <span contenteditable="true">{{ trening.opis }}</span> 
+        Naziv: <span contenteditable="true" id="naziv">{{ trening.naziv }}</span> <br><br>
+        Opis: <span contenteditable="true" id="opis">{{ trening.opis }}</span> 
         <br><br>
         Vrsta treninga:
-        <select v-model="selectedValue">
+        <select v-model="trening.vrstaId">
 			<option v-for="vrsta in vrsteTreninga" v-bind:key="vrsta.id" v-bind:value="vrsta.id">{{ vrsta.naziv }}</option>
 		</select><br><br>
 
-        <button>Spremi</button> 
-        <button>Obriši</button>
+        <button v-on:click="urediTrening()">Spremi</button> 
+        <button v-on:click="obrisiTrening()">Obriši</button>
        
        <br><br><br>
-       TERMINI 
+       TERMINI <br>
         <div class="termini" v-for="t in termini" :key="t.id">
         <ul class="termini-list">   
             <li>
@@ -26,8 +26,8 @@
         
             </li>   
         </ul>   
-        <button>Dodaj novi termin</button>
         </div> 
+        <button>Dodaj novi termin</button>
     </div>
 </template>
 
@@ -39,7 +39,6 @@ import axios from 'axios';
             return {
                 trening: undefined,
                 termini: undefined,
-                selectedValue: "",
                 vrsteTreninga: undefined
             }
         },
@@ -67,6 +66,13 @@ import axios from 'axios';
                 })
                 this.$router.push({path: '/home'})
             },
+            urediTrening(){
+                let naziv = document.getElementById('naziv').textContent
+                let opis = document.getElementById('opis').textContent
+                let idVrsta = this.trening.vrstaId 
+                axios.post(`http://localhost:5000/urediTrening?id=` + this.trening.id + `&naziv=` + naziv + `&opis=` + opis + `&idVrsta=` + idVrsta)
+               
+            }
             
         }
     }

@@ -11,11 +11,12 @@ module.exports = class TreningRepository {
     async getAll(){
         this.treninzi = []
             try{
-                const sql = `SELECT trening.id AS id, trening.naziv AS naziv, trening.opis AS opis, vrsta_trening.naziv AS vrsta FROM trening JOIN vrsta_trening ON vrsta = vrsta_trening.id`;
+                const sql = `SELECT trening.id AS id, trening.naziv AS naziv, trening.opis AS opis, vrsta_trening.id AS vrstaid, vrsta_trening.naziv AS vrsta FROM trening JOIN vrsta_trening ON vrsta = vrsta_trening.id`;
                 const result = await db.query(sql);
                 let result_rows = result.rows;
                 result_rows.forEach(trening=> {
-                    let t = new Trening(trening.id, trening.naziv, trening.opis, trening.vrsta)
+                    let t = new Trening(trening.id, trening.naziv, trening.opis, trening.vrstaid, trening.vrsta)
+                    console.log(t)
                     this.treninzi.push(t)
                 });
                 this.init = true
@@ -43,5 +44,23 @@ module.exports = class TreningRepository {
             }
         }
         return undefined;
+    }
+
+    async edit(id, naziv, opis, idVrsta){
+        for(let i=0; i< this.treninzi.length; i++){
+            if(id == this.treninzi[i].id){
+                this.treninzi[i].naziv = naziv
+                this.treninzi[i].opis = opis
+                this.treninzi[i].idVrsta = idVrsta
+                let  sql = `UPDATE trening SET naziv = '` + naziv + `', opis = '` + opis + `', vrsta = ` + idVrsta +  ` WHERE id = ` + id;
+                console.log(sql)
+                await db.query(sql);
+                sql = `SELECT naziv from vrsta_trening WHERE id = ` + idVrsta
+                let result = await db.query(sql);
+                this.treninzi[i].vrsta = result.rows[0].naziv
+                return true
+            }
+        }
+        return false
     }
 }
