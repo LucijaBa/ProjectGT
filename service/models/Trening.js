@@ -25,16 +25,4 @@ module.exports = class Trening {
         }catch(err){}
         return termini;
     }
-
-    static async addNewTermin(idTrener, idTrening, datum, vrijeme){
-
-    }
-
-    static async changeTrainer(trening, trener){
-
-    }
-
-    static async changeTrainingData(){
-
-    }
 }

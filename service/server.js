@@ -47,6 +47,14 @@ app.get('/termini', async function (req, res) {
     res.send(termini)
 })
 
+app.post('/dodajTermin', async function (req, res) {
+    let result = await Termin.add(req.query.trener, req.query.trening, req.query.datum, req.query.vrijeme)
+    if(result==true)
+        res.sendStatus(200)
+    else
+        res.sendStatus(400)
+})
+
 app.get('/vrsteTreninga', async function (req, res) {
     let vrsteTreninga = await VrstaTreningRepo.getAll()
     res.send(vrsteTreninga)
@@ -54,7 +62,6 @@ app.get('/vrsteTreninga', async function (req, res) {
 
 app.post('/dodajVrstuTreninga', async function (req, res) {
     let result = await VrstaTreningRepo.add(req.query.naziv)
-    console.log(result)
     if(result==true)
         res.sendStatus(200)
     else
@@ -93,8 +100,17 @@ app.post('/urediTrening', async function (req, res) {
         res.sendStatus(400)
 })
 
+app.post('/urediTermin', async function (req, res) {
+    let result = await Termin.changeTrainer(req.query.termin, req.query.trener)
+    if(result==true)
+        res.sendStatus(200)
+    else
+        res.sendStatus(400)
+})
+
 app.post('/obrisiTermin', async function (req, res) {
-    let result = await Termin.remove(req.query.termin)
+    console.log(req.query.id)
+    let result = await Termin.remove(req.query.id)
     if(result==true)
         res.sendStatus(200)
     else

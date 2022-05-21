@@ -17,4 +17,25 @@ module.exports = class Termin {
             return false;
         }
     }
+
+    static async add(idTrener, idTrening, datum, vrijeme){
+        try{
+            const sql = `INSERT INTO termin(idTrener, idTrening, vrijeme, datum) VALUES (` + idTrener + `, ` + idTrening + `, '` + vrijeme + `'::TIME, '` + datum + `'::DATE )`;
+            console.log(sql)
+            await db.query(sql);
+            return true
+        }catch(err){
+            return false;
+        }
+    }
+
+    static async changeTrainer(termin, trener){
+        try{
+            const sql = `UPDATE termin SET idTrener = ` + trener + ` WHERE id = ` + termin;
+            await db.query(sql);
+            return true
+        }catch(err){
+            return false;
+        }
+    }
 }
