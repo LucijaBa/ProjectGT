@@ -7,7 +7,7 @@
         </div>
 
         Naziv: <span contenteditable="true" id="naziv"><b>{{ trening.naziv }}</b></span> <br><br>
-        Opis: <span contenteditable="true" id="opis"><b>{{ trening.opis }}</b></span> 
+        Opis: <span contenteditable="true" id="opis">{{ trening.opis }}</span> 
         <br><br>
         Vrsta treninga:
         <select v-model="trening.vrstaId">
@@ -26,7 +26,7 @@
                 <select v-bind:id="'termin' + t.id" v-model="t.trener">
                     <option v-for="trener in treneri" v-bind:key="trener.id" v-bind:value="trener.id">{{ trener.ime }}</option>
                 </select>
-         {{new Date(t.datum).toISOString().split('T')[0]}} {{t.vrijeme}} <button v-on:click="urediTermin(t.id)" class="edit">Spremi</button>    <button v-on:click="obrisiTermin(t.id)" class="delete">Obriši</button>
+         {{new Date(t.datum).toLocaleDateString()}} {{t.vrijeme}} <button v-on:click="urediTermin(t.id)" class="edit">Spremi</button>    <button v-on:click="obrisiTermin(t.id)" class="delete">Obriši</button>
         
             </li>   
         </ul>   
@@ -151,7 +151,9 @@ import axios from 'axios';
                  .then(()=>{
                      alert("Uspješno promjenjen trener")
                  })
-                 .catch()
+                 .catch(()=>{
+                    alert("Termini istog trenera se ne mogu preklapati")
+                })
             }
         }
     }
