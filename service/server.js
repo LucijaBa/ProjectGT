@@ -70,6 +70,7 @@ app.post('/dodajVrstuTreninga', async function (req, res) {
 
 app.post('/obrisiTrening', async function (req, res) {
     let result = await TreningRepo.remove(req.query.id)
+    console.log(result)
     if(result==true)
         res.sendStatus(200)
     else

@@ -21,7 +21,6 @@ module.exports = class Termin {
     static async add(idTrener, idTrening, datum, vrijeme){
         try{
             const sql = `INSERT INTO termin(idTrener, idTrening, vrijeme, datum) VALUES (` + idTrener + `, ` + idTrening + `, '` + vrijeme + `'::TIME, '` + datum + `'::DATE )`;
-            console.log(sql)
             await db.query(sql);
             return true
         }catch(err){

@@ -14,7 +14,6 @@ module.exports = {
         .then(res => {
             console.log(res.rows[0]);
             return res})
-        .catch(err => console.log(err));
     },
     pool: pool
 }
