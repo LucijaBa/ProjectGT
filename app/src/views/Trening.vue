@@ -23,7 +23,7 @@
         <div class="termini" v-for="t in termini" :key="t.id">
         <ul class="termini-list">   
             <li>
-                <select v-bind:id="'termin' + t.id" v-bind:value="t.trener">
+                <select v-bind:id="'termin' + t.id" v-model="t.trener">
                     <option v-for="trener in treneri" v-bind:key="trener.id" v-bind:value="trener.id">{{ trener.ime }}</option>
                 </select>
          {{new Date(t.datum).toISOString().split('T')[0]}} {{t.vrijeme}} <button v-on:click="urediTermin(t.id)" class="edit">Spremi</button>    <button v-on:click="obrisiTermin(t.id)" class="delete">Obriši</button>
@@ -125,6 +125,13 @@ import axios from 'axios';
                     return
                 }
 
+                let datumD = new Date(datum + " " + vrijeme)
+                let currentD = new Date()
+                if(datumD < currentD){
+                    alert("Vrijeme novog termina ne smije biti u prošlosti")
+                    return
+                }
+
                 axios.post(`http://localhost:5000/dodajTermin?trener=` + trener + `&trening=` + this.trening.id + `&datum=` + datum + `&vrijeme=` + vrijeme)
                 .then(()=>{
                     axios.get(`http://localhost:5000/termini?trening=` + this.trening.id)
@@ -134,7 +141,9 @@ import axios from 'axios';
                         document.getElementById('time').value = undefined
                         document.getElementById('trener').value = undefined
                     })
-                }).catch()
+                }).catch(()=>{
+                    alert("Termini istog trenera se ne mogu preklapati")
+                })
             },
             urediTermin(id){
                 let trener = document.getElementById('termin' + id).value
