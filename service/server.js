@@ -20,11 +20,12 @@ const Termin = require('./models/Termin')
 const TreningRepository = require('./models/TreningRepository')
 const TrenerRepository = require('./models/TrenerRepository')
 const VrstaTreningRepository = require('./models/VrstaTreningRepository');
-const { route } = require('express/lib/application');
+const TerminRepository = require('./models/TerminRepository')
 
 let TreningRepo = new TreningRepository()
 let TrenerRepo = new TrenerRepository()
 let VrstaTreningRepo = new VrstaTreningRepository()
+let TerminRepo = new TerminRepository()
 
 
 app.get('/treninzi', async function (req, res) {
@@ -48,12 +49,11 @@ app.get('/treneri', async function (req, res) {
 app.get('/termini', async function (req, res) {
     let trening = req.query.trening
     let termini = await Trening.getAllTermins(trening)
-    console.log(route)
     res.send(termini)
 })
 
 app.post('/dodajTermin', async function (req, res) {
-    let result = await Termin.add(req.query.trener, req.query.trening, req.query.datum, req.query.vrijeme)
+    let result = await TerminRepo.add(req.query.trener, req.query.trening, req.query.datum, req.query.vrijeme)
     if(result==true)
         res.sendStatus(200)
     else
@@ -116,7 +116,7 @@ app.post('/urediTermin', async function (req, res) {
 
 app.post('/obrisiTermin', async function (req, res) {
     console.log(req.query.id)
-    let result = await Termin.remove(req.query.id)
+    let result = await TerminRepo.remove(req.query.id)
     if(result==true)
         res.sendStatus(200)
     else
