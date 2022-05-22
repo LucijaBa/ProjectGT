@@ -19,7 +19,8 @@ const Trening = require('./models/Trening')
 const Termin = require('./models/Termin')
 const TreningRepository = require('./models/TreningRepository')
 const TrenerRepository = require('./models/TrenerRepository')
-const VrstaTreningRepository = require('./models/VrstaTreningRepository')
+const VrstaTreningRepository = require('./models/VrstaTreningRepository');
+const { route } = require('express/lib/application');
 
 let TreningRepo = new TreningRepository()
 let TrenerRepo = new TrenerRepository()
@@ -32,8 +33,11 @@ app.get('/treninzi', async function (req, res) {
 })
 
 app.get('/trening', async function (req, res) {
-    let trening = TreningRepo.getTrening(req.query.id)
-    res.send(trening)
+    let trening = await TreningRepo.getTrening(req.query.id)
+    if (trening != undefined)
+        res.send(trening)
+    else    
+        res.sendStatus(404)
 })
 
 app.get('/treneri', async function (req, res) {
@@ -44,6 +48,7 @@ app.get('/treneri', async function (req, res) {
 app.get('/termini', async function (req, res) {
     let trening = req.query.trening
     let termini = await Trening.getAllTermins(trening)
+    console.log(route)
     res.send(termini)
 })
 
@@ -118,5 +123,8 @@ app.post('/obrisiTermin', async function (req, res) {
         res.sendStatus(400)
 })
 
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(5000);
+  }
 
-app.listen(5000);
+module.exports = app
